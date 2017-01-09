@@ -1,0 +1,54 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.nzh">
+
+    <!--获取网络状态权限-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+         App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".android.animation.AnimationMain"></activity>
+        <activity android:name=".android.components.ComponentsMain"></activity>
+        <activity android:name=".android.gadgets.GadgetsMain"></activity>
+        <activity android:name=".android.views.ViewsMain"></activity>
+        <activity android:name=".android.others.OthersMain"></activity>
+        <activity android:name=".android.third.ThirdPartyLibraryMain"></activity>
+        <activity android:name=".android.example.ExampleMain"></activity>
+        <activity android:name=".framework.FrameworkMain"></activity>
+
+        <!--四大组件-->
+        <activity android:name=".android.components.activity.CompActivityMain"></activity>
+
+        <activity android:name=".android.components.service.CompServiceMain"></activity>
+
+        <activity android:name=".android.components.contentprovider.CompContentProviderMain"></activity>
+
+        <activity android:name=".android.components.broadcastreceive.CompBroadcastReceiverMain"></activity>
+
+        <!--小工具-->
+        <activity android:name=".android.gadgets.GadgetsNetActivity"></activity>
+
+        <activity android:name=".android.gadgets.GadgetsRadioActivity"></activity>
+
+        <!--其他-->
+        <activity android:name=".android.others.SVNActivity"></activity>
+    </application>
+
+</manifest>
