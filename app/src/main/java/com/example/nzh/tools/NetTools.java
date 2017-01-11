@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
+import android.telephony.TelephonyManager;
 
 /**
  * Created by NIZHIHE on 2017/1/6.
@@ -20,7 +22,7 @@ public class NetTools {
      * @param context
      * @return
      */
-    public static boolean checkNetworkState(Context context) {
+    public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager manager = getConnectivityManager(context);
 
         boolean flag = false;
@@ -98,6 +100,16 @@ public class NetTools {
      * @return
      */
     private static ConnectivityManager getConnectivityManager(Context context) {
-        return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+    }
+
+    /**
+     * 获取TelephonyManager
+     *
+     * @param context
+     * @return
+     */
+    private static TelephonyManager getTelephonyManager(Context context) {
+        return (TelephonyManager) context.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
     }
 }

@@ -1,21 +1,19 @@
 package com.example.nzh.android.gadgets;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.nzh.commons.Constants;
 import com.example.nzh.tools.AlertTools;
+import com.example.nzh.tools.views.BasicViewTools;
 import com.example.nzh.tools.NetTools;
+import com.example.nzh.tools.views.LPTools;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
 import static android.widget.Toast.makeText;
 
 /**
@@ -26,7 +24,6 @@ public class GadgetsNetActivity extends Activity implements View.OnClickListener
     private Button checkNetworkStateBtn;
     private Button openSettingBtn;
     private Button checkAndOpenNetworkBtn;
-    private TextView showNetworkStateTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,43 +36,38 @@ public class GadgetsNetActivity extends Activity implements View.OnClickListener
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
 
-        checkNetworkStateBtn = new Button(this);
-        checkNetworkStateBtn.setText("检查网络状态");
-        checkNetworkStateBtn.setOnClickListener(this);
-        root.addView(checkNetworkStateBtn, new ViewGroup.LayoutParams(Constants.MP, Constants.WC));
-        showNetworkStateTxt = makeTextView(this, "NetTools.checkNetworkState(this)");
-        root.addView(showNetworkStateTxt, new ViewGroup.LayoutParams(Constants.MP, Constants.WC));
+        root.addView(BasicViewTools.makeTextView(this, "相关权限:" +
+                "\r\n1、获取网络状态\r\nandroid.permission.ACCESS_NETWORK_STATE" +
+                "\r\n核心内容:" +
+                "\r\n1、获取网络连接相关的管理器" +
+                "\r\nConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);" +
+                "\r\n2、获取当前网络状态:" +
+                "\r\nmanager.getActiveNetworkInfo().isAvailable();" +
+                "\r\n相关工具类:\r\nNetTools"+
+                "\r\n参考资料:" +
+                "\r\n1、http://blog.csdn.net/u012547790/article/details/49127031"), LPTools.generateMW());
+
+        checkNetworkStateBtn = BasicViewTools.makeButton(this, "检查网络状态", this);
+        root.addView(checkNetworkStateBtn, LPTools.generateMW());
+        root.addView(BasicViewTools.makeTextView(this, "NetTools.checkNetworkState(this);"), LPTools.generateMW());
 
 
-        openSettingBtn = makeButton(this, "打开网络设置界面", this);
-        root.addView(openSettingBtn, new ViewGroup.LayoutParams(Constants.MP, Constants.WC));
+        openSettingBtn = BasicViewTools.makeButton(this, "打开网络设置界面", this);
+        root.addView(openSettingBtn, LPTools.generateMW());
+        root.addView(BasicViewTools.makeTextView(this, "NetTools.openNetworkSetting(this);"), LPTools.generateMW());
 
-        checkAndOpenNetworkBtn = makeButton(this, "检查网络状态,无网络提示", this);
-        root.addView(checkAndOpenNetworkBtn, new ViewGroup.LayoutParams(Constants.MP, Constants.WC));
+        checkAndOpenNetworkBtn = BasicViewTools.makeButton(this, "检查网络状态,无网络提示", this);
+        root.addView(checkAndOpenNetworkBtn, LPTools.generateMW());
 
-        root.setLayoutParams(new ViewGroup.LayoutParams(Constants.MP, Constants.MP));
+        root.setLayoutParams(LPTools.generateMM());
         setContentView(root);
     }
-
-    public Button makeButton(Context context, String text, View.OnClickListener listener) {
-        Button button = new Button(context);
-        button.setText(text);
-        button.setOnClickListener(listener);
-        return button;
-    }
-
-    public TextView makeTextView(Context context, String text){
-        TextView tv = new TextView(context);
-        tv.setText(text);
-        return tv;
-    }
-
 
     @Override
     public void onClick(View v) {
         if (v == checkNetworkStateBtn) {
             String msg = "网络不可用";
-            if (NetTools.checkNetworkState(this)) {
+            if (NetTools.isNetworkAvailable(this)) {
                 msg = "网络可用";
             }
             AlertTools.makeToast(this, msg);
@@ -86,9 +78,9 @@ public class GadgetsNetActivity extends Activity implements View.OnClickListener
         }
 
         if (v == checkAndOpenNetworkBtn) {
-            if (!NetTools.checkNetworkState(this)) {
-                NetTools.openNetworkSetting(this);
-            }else{
+            if (!NetTools.isNetworkAvailable(this)) {
+                NetTools.promptNetworkSetting(this);
+            } else {
                 AlertTools.makeToast(this, "网络可用");
             }
         }
