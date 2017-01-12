@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
@@ -17,7 +18,7 @@ import android.telephony.TelephonyManager;
 public class NetTools {
 
     /**
-     * 监测网络是否连接
+     * 判断网络是否连接
      *
      * @param context
      * @return
@@ -29,6 +30,30 @@ public class NetTools {
 
         if (manager.getActiveNetworkInfo() != null) {
             flag = manager.getActiveNetworkInfo().isAvailable();
+        }
+
+        return flag;
+    }
+
+    /**
+     * 判断网络是否可用
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager manager = getConnectivityManager(context);
+
+        boolean flag = false;
+
+        if (manager != null) {
+
+            NetworkInfo info = manager.getActiveNetworkInfo();
+
+            if (info != null && info.getState() == NetworkInfo.State.CONNECTED) {
+                flag = true;
+            }
+
         }
 
         return flag;
@@ -55,6 +80,7 @@ public class NetTools {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 //TODO 无网情况可以选择退出APP
+                System.exit(0);
             }
         });
         builder.create();
@@ -86,7 +112,47 @@ public class NetTools {
     }
 
 
-    //判断网络类型
+    /**
+     * 判断网络类型是否WIFI
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isWIFI(Context context) {
+        ConnectivityManager manager = getConnectivityManager(context);
+
+        boolean flag = false;
+
+        if (manager != null) {
+            NetworkInfo info = manager.getActiveNetworkInfo();
+            if (info != null && info.getType() == ConnectivityManager.TYPE_WIFI) {
+                flag = true;
+            }
+        }
+
+        return flag;
+    }
+
+    /**
+     * 判断网络类型是否是GPRS
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isMobile(Context context) {
+        ConnectivityManager manager = getConnectivityManager(context);
+
+        boolean flag = false;
+
+        if (manager != null) {
+            NetworkInfo info = manager.getActiveNetworkInfo();
+            if (info != null && info.getType() == ConnectivityManager.TYPE_MOBILE) {
+                flag = true;
+            }
+        }
+
+        return flag;
+    }
 
     //判断网络供应商
 
