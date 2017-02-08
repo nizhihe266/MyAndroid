@@ -4,6 +4,7 @@ package com.example.nzh;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v13.app.ActivityCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,8 +20,13 @@ import com.example.nzh.android.others.OthersMain;
 import com.example.nzh.android.views.ViewsMain;
 import com.example.nzh.commons.Constants;
 import com.example.nzh.android.third.ThirdPartyLibraryMain;
+import com.example.nzh.core.permission.PermissionCallback;
+import com.example.nzh.core.permission.PermissionUtils;
 import com.example.nzh.framework.FrameworkMain;
+import com.example.nzh.tools.AlertTools;
 import com.example.nzh.tools.CollectionTools;
+import com.example.nzh.tools.LogUtils;
+import com.example.nzh.tools.SystemTools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +37,7 @@ import java.util.Map;
  * Created by NIZHIHE on 2016/12/30.
  */
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements ActivityCompat.OnRequestPermissionsResultCallback, PermissionCallback {
 
     private static List<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
 
@@ -49,6 +55,14 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // LogUtils.v(""+(1/0));
+
+        LogUtils.w("1*****************************************1"+ SystemTools.getSDKName());
+
+        PermissionUtils.checkSelfPermissions(this);
+
+        LogUtils.w("1*****************************************1");
+
 
         LinearLayout root = new LinearLayout(this);
 
@@ -73,4 +87,15 @@ public class MainActivity extends Activity {
         });
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        PermissionUtils.requestPermissionsResult(this, permissions, grantResults, this);
+    }
+
+    @Override
+    public void permissionGranted(String[] permissions) {
+        String groups = PermissionUtils.getPermissionGroups(this, permissions);
+        AlertTools.makeToast(this, groups + "以上权限已被成功授权");
+    }
 }

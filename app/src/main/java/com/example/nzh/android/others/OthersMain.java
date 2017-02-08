@@ -12,6 +12,7 @@ import android.widget.SimpleAdapter;
 
 import com.example.nzh.R;
 import com.example.nzh.commons.Constants;
+import com.example.nzh.core.permission.old.PermissionActivity;
 import com.example.nzh.tools.CollectionTools;
 
 import java.util.ArrayList;
@@ -30,12 +31,16 @@ public class OthersMain extends Activity {
 
     static {
         mData.add(CollectionTools.generateMap(new String[]{"title", "desc", "target"}, new Object[]{"svn", "", SVNActivity.class}));
+        mData.add(CollectionTools.generateMap(new String[]{"title", "desc", "target"}, new Object[]{"权限", "", PermissionActivity.class}));
 
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
 
         LinearLayout root = new LinearLayout(this);
 
